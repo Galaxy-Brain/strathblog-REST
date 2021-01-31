@@ -124,6 +124,6 @@ class PostsController extends Controller
         $post = Post::find($id);
         unlink('images/post/'.$post->image);
         $post->delete();
-        return response('Successfilly Deleted Your Post', 200)
+        return response('Successfully Deleted Your Post', 200);
     }
 }
