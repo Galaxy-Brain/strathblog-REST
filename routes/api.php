@@ -18,5 +18,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('token', 'App\Http\Controllers\AuthController@getToken')->name('token');
+Route::post('get-token', 'App\Http\Controllers\AuthController@getToken')->name('app.token');
+Route::post('register', 'App\Http\Controllers\AuthController@register')->name('app.register');
 Route::apiResource('post', 'App\Http\Controllers\PostsController');

@@ -9,6 +9,9 @@ use Illuminate\Support\Str;
 
 class PostsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:sanctum');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -57,7 +60,7 @@ class PostsController extends Controller
         $post->content = $request->content;
         $post->save();
 
-        return response('Succfessfully Created a new Post', 200);
+        return response('Successfully Created a new Post', 200);
     }
 
     /**
@@ -110,7 +113,7 @@ class PostsController extends Controller
         $post->content = $request->content;
         $post->save();
 
-        return response('Succfessfully Updated Your Post', 200);
+        return response('Successfully Updated Your Post', 200);
     }
 
     /**

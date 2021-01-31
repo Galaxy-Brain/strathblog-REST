@@ -22,12 +22,36 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            return $user->createToken($request->device_name)->plainTextToken;
+            return response()->json([
+                'success'=> true,
+                'token'=> 'Bearer '.$user->createToken($request->device_name)->plainTextToken
+            ]);
         }else {
-            throw ValidationException::withMessages([
-                'email'=> ['The Provided Credentials are Incorrect']
+            return response()->json([
+                'success'=> false,
+                'token'=> 'Credentials are incorrect'
             ]);
         }
 
     }
+
+    public function register(Request $request){
+        $request->validate([
+            'name'=>'required',
+            'email'=>'required|email',
+            'password'=>'required|min:8',
+        ]);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+        return response()->json([
+            'success'=>true,
+            'message'=>'Successfully Registered'
+        ]);
+    }
+
 }
