@@ -40,7 +40,6 @@ class PostsController extends Controller
         return response()->json([
             'success' => true,
             'posts' => $posts,
-            'user'=>auth()->user()
         ]);
     }
 
@@ -77,6 +76,7 @@ class PostsController extends Controller
             $imagename = 'Default.jpg';
         }
 
+        $post->user_id = auth()->user()->id;
         $post->title = $request->title;
         $post->photo = $imagename;
         $post->desc = $request->desc;
@@ -130,7 +130,7 @@ class PostsController extends Controller
             $imagename = 'Default.jpg';
         }
 
-        $post->user_id = $request->user()->id;
+        $post->user_id = auth()->user()->id;
         $post->title = $request->title;
         $post->photo = $imagename;
         $post->desc = $request->desc;
