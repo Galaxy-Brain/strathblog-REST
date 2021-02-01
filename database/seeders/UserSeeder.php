@@ -18,12 +18,12 @@ class UserSeeder extends Seeder
         User::create([
             'name'=>'Steve Nyanumba',
             'email'=>'stevennmb9@gmail.com',
-            'password'=>Hash::make("123456790")
+            'password'=>Hash::make("1234567890")
         ]);
         User::create([
             'name'=>'Administrator',
             'email'=>'admin@galaxybrain.com',
-            'password'=>Hash::make("123456790"),
+            'password'=>Hash::make("1234567890"),
             'is_admin'=>true,
         ]);
     }
