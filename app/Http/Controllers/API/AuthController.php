@@ -25,7 +25,7 @@ class AuthController extends Controller
             return response()->json([
                 'success'=> true,
                 'token'=> 'Bearer '.$user->createToken($request->email)->plainTextToken,
-                'user'=>auth()->user()
+                'user'=>$user
             ]);
         }else {
             return response()->json([
@@ -74,7 +74,7 @@ class AuthController extends Controller
     }
 
     public function saveUserInfo(Request $request){
-        $user = User::find(auth()->user()->id);
+        $user = User::find($request->user()->id);
         $user->name = $request->name;
         $user->lastname = $request->lastname;
         $photo = $request->file('photo');
