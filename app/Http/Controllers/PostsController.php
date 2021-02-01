@@ -19,7 +19,28 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return Post::all();
+        $posts = Post::orderBy('id','desc')->get();
+        foreach($posts as $post){
+            //get user of post
+            $post->user;
+            //comments count
+            $post['commentsCount'] = count($post->comments);
+            //likes count
+            $post['likesCount'] = count($post->likes);
+            //check if users liked his own post
+            $post['selfLike'] = false;
+            foreach($post->likes as $like){
+                if($like->user_id == auth()->user()->id){
+                    $post['selfLike'] = true;
+                }
+            }
+
+        }
+
+        return response()->json([
+            'success' => true,
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -128,5 +149,22 @@ class PostsController extends Controller
         unlink('images/post/'.$post->image);
         $post->delete();
         return response('Successfully Deleted Your Post', 200);
+    }
+
+
+    /**
+     * My Own Posts.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function myPosts(){
+        $posts = Post::where('user_id',auth()->user()->id)->orderBy('id','desc')->get();
+        $user = auth()->user();
+        return response()->json([
+            'success' => true,
+            'posts' => $posts,
+            'user' => $user
+        ]);
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Validator;
+use Laravel\Sanctum\Sanctum;
 
 class AuthController extends Controller
 {
-    // Get your Auth Token
 
+    // Login an Existing User
     public function login(Request $request)
     {
         $request->validate([
@@ -36,6 +36,7 @@ class AuthController extends Controller
 
     }
 
+    // Register a new User
     public function register(Request $request){
         $request->validate([
             'name'=>'required',
@@ -53,6 +54,46 @@ class AuthController extends Controller
             'success'=>true,
             'message'=>'Successfully Registered'
         ]);
+    }
+
+
+    public function logout(Request $request){
+        try{
+            $request->user()->currentAccessToken()->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Successfully Logged Out'
+            ]);
+        }
+        catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => ''.$e
+            ]);
+        }
+    }
+
+    public function saveUserInfo(Request $request){
+        $user = User::find(auth()->user()->id);
+        $user->name = $request->name;
+        $user->lastname = $request->lastname;
+        $photo = '';
+        //check if user provided photo
+        if($request->photo!=''){
+            // user time for photo name to prevent name duplication
+            $photo = time().'.jpg';
+            // decode photo string and save to storage/profiles
+            file_put_contents('storage/profiles/'.$photo,base64_decode($request->photo));
+            $user->photo = $photo;
+        }
+
+        $user->update();
+
+        return response()->json([
+            'success' => true,
+            'photo' => $photo
+        ]);
+
     }
 
 }

@@ -14,10 +14,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//user
+Route::post('login','App\Http\Controllers\Api\AuthController@login');
+Route::post('register','App\Http\Controllers\Api\AuthController@register');
+Route::get('logout','App\Http\Controllers\Api\AuthController@logout');
+Route::post('save_user_info','App\Http\Controllers\Api\AuthController@saveUserInfo')->middleware('auth:sanctum');
 
-Route::post('get-token', 'App\Http\Controllers\AuthController@getToken')->name('app.token');
-Route::post('register', 'App\Http\Controllers\AuthController@register')->name('app.register');
-Route::apiResource('post', 'App\Http\Controllers\PostsController');
+//post
+Route::post('posts/create','App\Http\Controllers\PostsController@create')->middleware('auth:sanctum');
+Route::post('posts/delete','App\Http\Controllers\PostsController@delete')->middleware('auth:sanctum');
+Route::post('posts/update','App\Http\Controllers\PostsController@update')->middleware('auth:sanctum');
+Route::get('posts','App\Http\Controllers\PostsController@posts')->middleware('auth:sanctum');
+Route::get('posts/my_posts','App\Http\Controllers\PostsController@myPosts')->middleware('auth:sanctum');
+
+
+//comment
+Route::post('comments/create','App\Http\Controllers\Api\CommentsController@create')->middleware('auth:sanctum');
+Route::post('comments/delete','App\Http\Controllers\Api\CommentsController@delete')->middleware('auth:sanctum');
+Route::post('comments/update','App\Http\Controllers\Api\CommentsController@update')->middleware('auth:sanctum');
+Route::post('posts/comments','App\Http\Controllers\Api\CommentsController@comments')->middleware('auth:sanctum');
+
+
+//like
+Route::post('posts/like','App\Http\Controllers\Api\LikesController@like')->middleware('auth:sanctum');
