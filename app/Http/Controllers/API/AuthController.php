@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,8 +16,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email'=>'required',
-            'password'=>'required',
-            'device_name'=>'required'
+            'password'=>'required'
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -24,12 +24,13 @@ class AuthController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success'=> true,
-                'token'=> 'Bearer '.$user->createToken($request->device_name)->plainTextToken
+                'token'=> 'Bearer '.$user->createToken($request->email)->plainTextToken,
+                'user'=>auth()->user()
             ]);
         }else {
             return response()->json([
                 'success'=> false,
-                'token'=> 'Credentials are incorrect'
+                'token'=> 'Your Credentials are Incorrect',
             ]);
         }
 
@@ -76,21 +77,21 @@ class AuthController extends Controller
         $user = User::find(auth()->user()->id);
         $user->name = $request->name;
         $user->lastname = $request->lastname;
-        $photo = '';
+        $photo = $request->file('photo');
         //check if user provided photo
-        if($request->photo!=''){
+        if(isset($photo)){
             // user time for photo name to prevent name duplication
-            $photo = time().'.jpg';
+            $photoname = time().'.'.$photo->getClientOriginalExtension();
             // decode photo string and save to storage/profiles
-            file_put_contents('storage/profiles/'.$photo,base64_decode($request->photo));
-            $user->photo = $photo;
+            $photo->move('storage/profile-photos/', $photoname);
+            $user->profile_photo_path = $photoname;
         }
 
         $user->update();
 
         return response()->json([
             'success' => true,
-            'photo' => $photo
+            'photo' => $photoname
         ]);
 
     }
