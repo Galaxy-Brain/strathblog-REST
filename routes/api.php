@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 //user
-Route::post('login','App\Http\Controllers\Api\AuthController@login');
-Route::post('register','App\Http\Controllers\Api\AuthController@register');
-Route::get('logout','App\Http\Controllers\Api\AuthController@logout');
-Route::post('save_user_info','App\Http\Controllers\Api\AuthController@saveUserInfo')->middleware('auth:sanctum');
+Route::post('login','App\Http\Controllers\API\AuthController@login');
+Route::post('register','App\Http\Controllers\API\AuthController@register');
+Route::get('logout','App\Http\Controllers\API\AuthController@logout');
+Route::post('save_user_info','App\Http\Controllers\API\AuthController@saveUserInfo')->middleware('auth:sanctum');
 
 //post
 Route::post('posts/create','App\Http\Controllers\PostsController@create')->middleware('auth:sanctum');
@@ -29,11 +29,11 @@ Route::get('posts/my_posts','App\Http\Controllers\PostsController@myPosts')->mid
 
 
 //comment
-Route::post('comments/create','App\Http\Controllers\Api\CommentsController@create')->middleware('auth:sanctum');
-Route::post('comments/delete','App\Http\Controllers\Api\CommentsController@delete')->middleware('auth:sanctum');
-Route::post('comments/update','App\Http\Controllers\Api\CommentsController@update')->middleware('auth:sanctum');
-Route::post('posts/comments','App\Http\Controllers\Api\CommentsController@comments')->middleware('auth:sanctum');
+Route::post('comments/create','App\Http\Controllers\API\CommentsController@create')->middleware('auth:sanctum');
+Route::post('comments/delete','App\Http\Controllers\API\CommentsController@delete')->middleware('auth:sanctum');
+Route::post('comments/update','App\Http\Controllers\API\CommentsController@update')->middleware('auth:sanctum');
+Route::post('posts/comments','App\Http\Controllers\API\CommentsController@comments')->middleware('auth:sanctum');
 
 
 //like
-Route::post('posts/like','App\Http\Controllers\Api\LikesController@like')->middleware('auth:sanctum');
+Route::post('posts/like','App\Http\Controllers\API\LikesController@like')->middleware('auth:sanctum');
