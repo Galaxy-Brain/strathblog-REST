@@ -53,13 +53,13 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title'=>'required',
-            'image'=>'mimes:png,jpg|nullable',
+            'photo'=>'mimes:png,jpg|nullable',
             'desc'=>'required|min:30',
         ]);
 
         $post = new Post();
 
-        $image = $request->file('image');
+        $image = $request->file('photo');
         if (isset($image)){
             $title = Str::slug($request->title);
             $date = Carbon::now()->toDateString();
@@ -77,7 +77,7 @@ class PostsController extends Controller
         }
 
         $post->title = $request->title;
-        $post->image = $imagename;
+        $post->photo = $imagename;
         $post->desc = $request->desc;
         $post->save();
 
@@ -106,13 +106,13 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title'=>'required',
-            'image'=>'mimes:png,jpg|nullable',
+            'photo'=>'mimes:png,jpg|nullable',
             'desc'=>'required|min:30',
         ]);
 
         $post = new Post();
 
-        $image = $request->file('image');
+        $image = $request->file('photo');
         if (isset($image)){
             $title = Str::slug($request->title);
             $date = Carbon::now()->toDateString();
@@ -130,7 +130,7 @@ class PostsController extends Controller
         }
 
         $post->title = $request->title;
-        $post->image = $imagename;
+        $post->photo = $imagename;
         $post->desc = $request->desc;
         $post->save();
 
