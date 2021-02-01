@@ -53,7 +53,7 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title'=>'required',
-            'image'=>'required|mimes:png,jpg',
+            'image'=>'mimes:png,jpg|nullable',
             'content'=>'required|min:30',
         ]);
 
@@ -106,7 +106,7 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title'=>'required',
-            'image'=>'required|mimes:png,jpg',
+            'image'=>'mimes:png,jpg|nullable',
             'content'=>'required|min:30',
         ]);
 

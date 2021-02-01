@@ -21,10 +21,7 @@ Route::get('logout','App\Http\Controllers\API\AuthController@logout');
 Route::post('save_user_info','App\Http\Controllers\API\AuthController@saveUserInfo')->middleware('auth:sanctum');
 
 //post
-Route::post('posts/create','App\Http\Controllers\PostsController@create')->middleware('auth:sanctum');
-Route::post('posts/delete','App\Http\Controllers\PostsController@delete')->middleware('auth:sanctum');
-Route::post('posts/update','App\Http\Controllers\PostsController@update')->middleware('auth:sanctum');
-Route::get('posts','App\Http\Controllers\PostsController@index')->middleware('auth:sanctum');
+Route::apiResource('posts', 'App\Http\Controllers\PostsController')->middleware('auth:sanctum');
 Route::get('posts/my_posts','App\Http\Controllers\PostsController@myPosts')->middleware('auth:sanctum');
 
 
