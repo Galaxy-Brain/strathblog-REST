@@ -129,6 +129,7 @@ class PostsController extends Controller
             $imagename = 'Default.jpg';
         }
 
+        $post->user_id = $request->user()->id;
         $post->title = $request->title;
         $post->photo = $imagename;
         $post->desc = $request->desc;
