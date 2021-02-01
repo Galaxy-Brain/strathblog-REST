@@ -54,7 +54,7 @@ class PostsController extends Controller
         $this->validate($request, [
             'title'=>'required',
             'image'=>'mimes:png,jpg|nullable',
-            'content'=>'required|min:30',
+            'desc'=>'required|min:30',
         ]);
 
         $post = new Post();
@@ -78,7 +78,7 @@ class PostsController extends Controller
 
         $post->title = $request->title;
         $post->image = $imagename;
-        $post->content = $request->content;
+        $post->desc = $request->desc;
         $post->save();
 
         return response('Successfully Created a new Post', 200);
@@ -107,7 +107,7 @@ class PostsController extends Controller
         $this->validate($request, [
             'title'=>'required',
             'image'=>'mimes:png,jpg|nullable',
-            'content'=>'required|min:30',
+            'desc'=>'required|min:30',
         ]);
 
         $post = new Post();
@@ -131,7 +131,7 @@ class PostsController extends Controller
 
         $post->title = $request->title;
         $post->image = $imagename;
-        $post->content = $request->content;
+        $post->desc = $request->desc;
         $post->save();
 
         return response('Successfully Updated Your Post', 200);
