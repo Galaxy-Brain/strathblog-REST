@@ -39,7 +39,8 @@ class PostsController extends Controller
 
         return response()->json([
             'success' => true,
-            'posts' => $posts
+            'posts' => $posts,
+            'user'=>auth()->user()
         ]);
     }
 
