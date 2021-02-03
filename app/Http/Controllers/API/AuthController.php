@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,7 +17,8 @@ class AuthController extends Controller
     {
         $request->validate([
             'email'=>'required',
-            'password'=>'required'
+            'password'=>'required',
+            'device'=>'required'
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -24,7 +26,7 @@ class AuthController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success'=> true,
-                'token'=> 'Bearer '.$user->createToken($request->email)->plainTextToken,
+                'token'=> 'Bearer '.$user->createToken($request->device)->plainTextToken,
                 'user'=>$user
             ]);
         }else {
@@ -43,6 +45,15 @@ class AuthController extends Controller
             'email'=>'required|email',
             'password'=>'required|min:8',
         ]);
+
+        $existing = User::where('email', $request->email)->first();
+
+        if ($existing) {
+            return response()->json([
+                'success'=>false,
+                'message'=>'User with this email already exists'
+            ]);
+        }
 
         $user = new User();
         $user->name = $request->name;
@@ -94,6 +105,16 @@ class AuthController extends Controller
             'photo' => $photoname
         ]);
 
+    }
+
+    public function myPosts(){
+        $posts = Post::where('user_id',auth()->user()->id)->orderBy('id','desc')->get();
+        $user = auth()->user();
+        return response()->json([
+            'success' => true,
+            'posts' => $posts,
+            'user' => $user
+        ]);
     }
 
 }

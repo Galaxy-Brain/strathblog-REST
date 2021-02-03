@@ -20,3 +20,12 @@ new Vue({
             },
         }),
 }).$mount(app);
+
+const Swal = require('sweetalert2').default
+
+window.Toast = Swal.mixin({
+    toast:true,
+    position:'top-right',
+    timer:5000,
+    timerProgressBar:true
+})

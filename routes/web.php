@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use GuzzleHttp\Middleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,3 +29,21 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/posts', function () {
+    return Inertia::render('Posts');
+})->name('posts');
+Route::middleware(['auth:sanctum', 'verified'])->get('/users', function () {
+    return Inertia::render('Users');
+})->name('users');
+
+
+
+// Other
+
+Route::group(['prefix'=>'api/v2'], function(){
+    Route::apiResource('posts', 'App\Http\Controllers\PostsController');
+    Route::get('posts/my_posts','App\Http\Controllers\PostsController@myPosts');
+    Route::get('users', function(){
+        return User::with('posts')->get();
+    });
+});

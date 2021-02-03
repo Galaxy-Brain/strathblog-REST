@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 class PostsController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth:sanctum');
+        $this->middleware('auth:sanctum')->except('index');
     }
     /**
      * Display a listing of the resource.
@@ -29,9 +29,11 @@ class PostsController extends Controller
             $post['likesCount'] = count($post->likes);
             //check if users liked his own post
             $post['selfLike'] = false;
-            foreach($post->likes as $like){
-                if($like->user_id == auth()->user()->id){
-                    $post['selfLike'] = true;
+            if (auth()->user()) {
+                foreach($post->likes as $like){
+                    if($like->user_id == auth()->user()->id){
+                        $post['selfLike'] = true;
+                    }
                 }
             }
 
@@ -53,7 +55,7 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title'=>'required',
-            'photo'=>'mimes:png,jpg|nullable',
+            'photo'=>'nullable',
             'desc'=>'required|min:30',
         ]);
 
@@ -82,7 +84,10 @@ class PostsController extends Controller
         $post->desc = $request->desc;
         $post->save();
 
-        return response('Successfully Created a new Post', 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully Created a new Post',
+        ]);
     }
 
     /**
@@ -136,7 +141,10 @@ class PostsController extends Controller
         $post->desc = $request->desc;
         $post->save();
 
-        return response('Successfully Updated Your Post', 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully Updated your Post',
+        ]);
     }
 
     /**
@@ -150,7 +158,10 @@ class PostsController extends Controller
         $post = Post::find($id);
         unlink('images/post/'.$post->image);
         $post->delete();
-        return response('Successfully Deleted Your Post', 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully Deleted your Post',
+        ]);
     }
 
 

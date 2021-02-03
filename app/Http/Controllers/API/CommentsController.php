@@ -36,6 +36,7 @@ class CommentsController extends Controller
         return response()->json([
             'success' => true,
             'comment'=>$comment,
+            'user'=>$comment->user(),
             'message' => 'comment added'
         ]);
     }
@@ -90,7 +91,7 @@ class CommentsController extends Controller
         if($comment->user_id != auth()->user()->id){
             return response()->json([
                 'success' => false,
-                'message' => 'unauthorize access'
+                'message' => 'Unauthorized access'
             ]);
         }
         $comment->delete();
