@@ -56,37 +56,28 @@ class PostsController extends Controller
         $this->validate($request, [
             'title'=>'required',
             'photo'=>'nullable',
-            'desc'=>'required|min:30',
+            'desc'=>'required',
         ]);
 
         $post = new Post();
 
-        $image = $request->file('photo');
-        if (isset($image)){
-            $title = Str::slug($request->title);
-            $date = Carbon::now()->toDateString();
-            $ext = $image->getClientOriginalExtension();
-
-            $imagename = $title.'-'.$date.'.'.$ext;
-
-            if (!file_exists('images/posts')) {
-                mkdir('images/posts', 0777, true);
-            }
-
-            $image->move('images/posts', $imagename);
-        }else{
-            $imagename = 'Default.jpg';
+        if($request->photo != ''){
+            //choose a unique name for photo
+            $photo = time().'.jpg';
+            file_put_contents('images/posts/'.$photo,base64_decode($request->photo));
+            $post->photo = $photo;
         }
 
         $post->user_id = auth()->user()->id;
         $post->title = $request->title;
-        $post->photo = $imagename;
         $post->desc = $request->desc;
         $post->save();
+        $post->user;
 
         return response()->json([
             'success' => true,
             'message' => 'Successfully Created a new Post',
+            'post'=>$post
         ]);
     }
 
@@ -112,38 +103,29 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title'=>'required',
-            'photo'=>'mimes:png,jpg|nullable',
             'desc'=>'required|min:30',
         ]);
 
         $post = new Post();
 
-        $image = $request->file('photo');
-        if (isset($image)){
-            $title = Str::slug($request->title);
-            $date = Carbon::now()->toDateString();
-            $ext = $image->getClientOriginalExtension();
-
-            $imagename = $title.'-'.$date.'.'.$ext;
-
-            if (!file_exists('images/posts')) {
-                mkdir('images/posts', 0777, true);
-            }
-
-            $image->move('images/posts', $imagename);
-        }else{
-            $imagename = 'Default.jpg';
+        if($request->photo != ''){
+            //choose a unique name for photo
+            $photo = time().'.jpg';
+            file_put_contents('images/posts/'.$photo,base64_decode($request->photo));
+            $post->photo = $photo;
         }
 
         $post->user_id = auth()->user()->id;
         $post->title = $request->title;
-        $post->photo = $imagename;
         $post->desc = $request->desc;
         $post->save();
+        $post->user;
 
         return response()->json([
             'success' => true,
             'message' => 'Successfully Updated your Post',
+            'post'=>$post
+
         ]);
     }
 
