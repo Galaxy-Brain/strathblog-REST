@@ -36,7 +36,6 @@ class CommentsController extends Controller
         return response()->json([
             'success' => true,
             'comment'=>$comment,
-            'user'=>$comment->user(),
             'message' => 'comment added'
         ]);
     }
