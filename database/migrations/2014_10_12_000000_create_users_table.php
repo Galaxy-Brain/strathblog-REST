@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 class CreateUsersTable extends Migration
 {
@@ -26,6 +27,18 @@ class CreateUsersTable extends Migration
             $table->text('profile_photo_path')->nullable();
             $table->timestamps();
         });
+
+        User::create([
+            'name'=>'Steve Nyanumba',
+            'email'=>'stevennmb9@gmail.com',
+            'password'=>Hash::make("1234567890")
+        ]);
+        User::create([
+            'name'=>'Administrator',
+            'email'=>'admin@galaxybrain.com',
+            'password'=>Hash::make("1234567890"),
+            'is_admin'=>true,
+        ]);
     }
 
     /**
